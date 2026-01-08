@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Práctica Oral Leaving Cert - Ordinary Level</title>
+  <style>
+    :root{
+      --bg:#f0f4f8; --card:#fff; --ink:#2c3e50; --muted:#6b7b8c;
+      --ok:#1e7e34; --warn:#b7791f; --bad:#b02a37; --blue:#2b6cb0;
+      --shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; max-width: 1050px; margin: 0 auto; padding: 20px; background: var(--bg); color: var(--ink); }
+    h1 { text-align:center; margin: 10px 0 4px; }
+    .sub { text-align:center; color: var(--muted); margin-bottom: 18px; }
+
+    .instructions { background: #e8f4fd; padding: 14px 16px; border-radius: 10px; border-left: 6px solid #3498db; box-shadow: var(--shadow); }
+    .row { display:flex; gap:14px; flex-wrap:wrap; margin-top: 16px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 14px; }
+    .topic-card { background: var(--card); padding: 16px; border-radius: 12px; box-shadow: var(--shadow); }
+    .topic-card h3 { margin: 0 0 6px; font-size: 17px; }
+    .topic-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .pill { display:inline-block; margin-top:8px; font-size:12px; padding:2px 10px; border-radius:999px; background:#eef2ff; color:#3730a3; font-weight:700; }
+
+    .controls { background: var(--card); padding: 14px; border-radius: 12px; box-shadow: var(--shadow); flex: 1; min-width: 280px; }
+    .controls h2 { margin: 0 0 8px; font-size: 16px; color: var(--blue); }
+    .btnrow { display:flex; gap:10px; flex-wrap:wrap; }
+    button {
+      background:#27ae60; color:#fff; border:none; padding:10px 14px; border-radius:10px;
+      cursor:pointer; font-weight:700; font-size:15px;
+    }
+    button.secondary{ background:#4b5563; }
+    button.danger{ background:#e74c3c; }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
+    .listening { animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%{ transform: translateY(0); } 50%{ transform: translateY(-1px); } 100%{ transform: translateY(0); } }
+
+    #status { margin-top: 8px; color: var(--muted); min-height: 20px; }
+    #questionBox { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background:#f7fafc; border: 1px solid #e5e7eb; }
+    #questionBox b { color: var(--ink); }
+
+    #transcriptWrap { background: var(--card); padding: 14px; border-radius: 12px; box-shadow: var(--shadow); margin-top: 14px; }
+    #transcriptWrap h2 { margin: 0 0 8px; font-size: 16px; color: var(--blue); display:flex; justify-content:space-between; align-items:center; gap:12px;}
+    #transcript { width:100%; min-height: 84px; resize: vertical; padding: 10px; border-radius: 10px; border:1px solid #d1d5db; font-size: 15px; }
+    .hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+    #checklist { margin-top: 14px; display:none; }
+    .item { display:flex; justify-content:space-between; align-items:center; gap:12px; padding: 10px 12px; border-radius: 10px; background:#f8fafc; border:1px solid #e5e7eb; margin-bottom: 10px; }
+    .tag { font-weight:900; padding: 4px 10px; border-radius: 999px; font-size: 12px; }
+    .tag.ok { background:#d4edda; color:#155724; }
+    .tag.warn { background:#fff3cd; color:#856404; }
+    .tag.bad { background:#f8d7da; color:#721c24; }
+    .evidence { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+    #summary { margin-top: 10px; padding: 12px; border-radius: 12px; display:none; }
+    #summary.ok { background:#d4edda; color:#155724; }
+    #summary.warn { background:#fff3cd; color:#856404; }
+    #summary.bad { background:#f8d7da; color:#721c24; }
+
+    .small { font-size: 12px; color: var(--muted); }
+    .footer { margin: 18px 0 6px; color: var(--muted); font-size: 12px; text-align:center; }
+    code.inline{ background:#eef2ff; padding:2px 6px; border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+  <h1>🇪🇸 Práctica Oral: Leaving Cert (OL)</h1>
+  <div class="sub">Habla, transcribe y comprueba si has cubierto los puntos clave.</div>
+
+  <div class="instructions">
+    <b>Instrucciones:</b> Selecciona un tema → pulsa <code class="inline">Empezar</code> → responde en voz alta.
+    Revisa la transcripción (puedes corregirla) y pulsa <code class="inline">Analizar</code>.
+    <div class="small" style="margin-top:6px;">
+      Nota: si el micrófono no funciona en tu dispositivo, pega aquí tu respuesta escrita y analiza igualmente.
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="controls">
+      <h2>Controles</h2>
+      <div class="btnrow">
+        <button id="btnStart" onclick="startFlow()" disabled>▶️ Empezar</button>
+        <button class="secondary" id="btnStop" onclick="stopListening()" disabled>⏹️ Parar</button>
+        <button class="secondary" id="btnAnalyze" onclick="analyzeNow()" disabled>🧠 Analizar</button>
+        <button class="danger" id="btnReset" onclick="resetAll()">🔄 Reset</button>
+      </div>
+
+      <div id="status">Elige un tema para activar “Empezar”.</div>
+
+      <div id="questionBox">
+        <b>Tema:</b> <span id="topicName">—</span><br/>
+        <b>Prompt (ES):</b> <span id="topicQuestionES">—</span><br/>
+        <b>Prompt (EN):</b> <span id="topicQuestionEN">—</span>
+      </div>
+
+      <div class="hint">
+        Truco: usa conectores simples (<b>también</b>, <b>porque</b>, <b>normalmente</b>) y frases claras.
+      </div>
+    </div>
+
+    <div class="controls" style="flex:1.35;">
+      <h2>Temas</h2>
+      <div class="grid" id="topicsGrid"></div>
+    </div>
+  </div>
+
+  <div id="transcriptWrap">
+    <h2>
+      <span>Transcripción</span>
+      <span class="small">Puedes editarla antes de analizar</span>
+    </h2>
+    <textarea id="transcript" placeholder="Tu respuesta aparecerá aquí (o pega aquí un texto si no funciona el micrófono)..."></textarea>
+    <div class="hint">El análisis se basa en este texto. Si la transcripción sale rara, corrígela un poco.</div>
+
+    <div id="summary"></div>
+    <div id="checklist"></div>
+  </div>
+
+  <div class="footer">Versión “checklist” para práctica: marca ideas clave (no es una nota oficial).</div>
+
+<script>
+/* =========================
+   CONFIGURACIÓN (PROFE)
+   ========================= */
+const MONTHS = /(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)/u;
+
+const FAMILY_VOCAB = [
+  "madre","padre","mamá","mama","papá","papa",
+  "hermano","hermana","abuelo","abuela","tio","tía","tia","primo","prima",
+  "hijo","hija","sobrino","sobrina","padrastro","madrastra"
+];
+
+const PHYSICAL_WORDS = [
+  "alto","alta","bajo","baja","delgado","delgada","gordito","gordita","gordo","gorda"
+];
+
+const HAIR_WORDS = [
+  "pelo","cabello","largo","corto","rizado","liso","ondulado",
+  "castaño","castano","rubio","rubia","moreno","morena","negro","negra","pelirrojo","pelirroja"
+];
+
+const EYES_WORDS = [
+  "ojos","azules","verdes","marrones","negros"
+];
+
+const PERSONALITY_ADJ = [
+  "simpatico","simpática","amable","divertido","divertida",
+  "serio","seria","trabajador","trabajadora","inteligente","tímido","timido","tímida","timida",
+  "generoso","generosa","agradable","responsable","perezoso","perezosa","hablador","habladora",
+  "cariñoso","carinoso","cariñosa","carinosa"
+];
+
+const HOBBIES = [
+  "leer","escuchar musica","musica","bailar","cantar","dibujar",
+  "jugar","videojuegos","futbol","baloncesto","padel","natacion",
+  "correr","caminar","ir de compras","compras","ver series","ver peliculas","cine",
+  "cocinar","viajar","tocar la guitarra","guitarra"
+];
+
+const TOWN_FACILITIES = [
+  "parque","polideportivo","piscina","cine","centro comercial","supermercado","tiendas",
+  "biblioteca","estacion","estación","hospital","farmacia","colegio","instituto",
+  "restaurantes","cafeterias","cafeterías","playa"
+];
+
+const SCHOOL_FACILITIES = [
+  "gimnasio","biblioteca","laboratorio","cantina","cafeteria","cafetería",
+  "pistas","campo","aula de informatica","aula de informática","sala de ordenadores",
+  "comedor","patio","sala de musica","sala de música"
+];
+
+const TOPICS = {
+  about_me: {
+    code: "1A",
+    title: "Háblame de ti",
+    question_es: "Háblame de ti. Sigue este orden: 1) Me llamo… 2) Tengo … años. 3) Mi cumpleaños es el … de … 4) Normalmente lo celebro con… (familia/amigos) 5) Soy de… / Vivo en…",
+    question_en: "Talk about yourself. Follow this order: 1) My name is… 2) I am … years old. 3) My birthday is on… 4) I usually celebrate it with… 5) I’m from… / I live in…",
+    speak: "Habla de ti.",
+    criteria: [
+      { id:"nombre", label:"Nombre", required:true,
+        patterns:[/me llamo\s+\p{L}+/u, /mi nombre es\s+\p{L}+/u, /soy\s+\p{L}+/u],
+        hint:"Di tu nombre. Ej.: «Me llamo Laura.»" },
+      { id:"edad", label:"Edad", required:true,
+        patterns:[/tengo\s+\d+\s+anos?/u, /tengo\s+\p{L}+\s+anos?/u, "tengo","años","anos"],
+        hint:"Di tu edad. Ej.: «Tengo quince años.»" },
+      { id:"fecha_cumple", label:"Fecha de cumpleaños (día/mes)", required:true,
+        patterns:["mi cumpleaños es","mi cumple es","cumplo años","cumplo anos","nací el","naci el", MONTHS, /\b(el|el dia)\s+\d{1,2}\b/u],
+        hint:"Di la fecha/mes. Ej.: «Mi cumpleaños es el 3 de mayo.»" },
+      { id:"celebracion", label:"Cómo celebras el cumpleaños", required:true,
+        patterns:["lo celebro","celebramos","hago una fiesta","tengo una fiesta","salgo","vamos a","voy a","cena","comemos","con mi familia","con mis amigos"],
+        hint:"Di cómo lo celebras. Ej.: «Normalmente lo celebro con mi familia.»" },
+      { id:"origen", label:"De dónde eres", required:true,
+        patterns:[/soy de\s+\p{L}+/u, /vivo en\s+\p{L}+/u, /naci en\s+\p{L}+/u, "irlanda","dublin","dublín","balbriggan"],
+        hint:"Di de dónde eres. Ej.: «Soy de Irlanda / Vivo en Dublín.»" }
+    ]
+  },
+
+  physical: {
+    code: "1B",
+    title: "¿Cómo eres físicamente?",
+    question_es: "Descríbete físicamente. Usa: «Soy…» y «Tengo…». Di: 1) Soy alto/a o bajo/a. 2) Soy delgado/a o gordito/a. 3) Tengo el pelo… (color + largo/corto). 4) Tengo los ojos…",
+    question_en: "Describe your appearance. Use: “Soy…” and “Tengo…”. Say: 1) Tall/short. 2) Slim/chubby. 3) Hair (colour + long/short). 4) Eyes colour.",
+    speak: "Describe cómo eres físicamente.",
+    criteria: [
+      { id:"altura", label:"Alto o bajo", required:true,
+        patterns:["soy alto","soy alta","soy bajo","soy baja","alto","bajo"],
+        hint:"Di si eres alto o bajo. Ej.: «Soy alto.»" },
+      { id:"constitucion", label:"Delgado o gordito", required:true,
+        patterns:["delgado","delgada","gordito","gordita","gordo","gorda"],
+        hint:"Di si eres delgado o gordito. Ej.: «Soy delgado / Soy gordito.»" },
+      { id:"pelo", label:"Pelo (color y/o tipo)", required:true,
+        patterns:[/tengo el pelo\s+\p{L}+/u, "tengo pelo", ...HAIR_WORDS],
+        hint:"Describe tu pelo. Ej.: «Tengo el pelo castaño y corto.»" },
+      { id:"ojos", label:"Ojos (color)", required:true,
+        patterns:[/tengo (los )?ojos\s+\p{L}+/u, ...EYES_WORDS],
+        hint:"Describe tus ojos. Ej.: «Tengo los ojos verdes.»" }
+    ]
+  },
+
+  personality: {
+    code: "1C",
+    title: "¿Cómo eres de personalidad?",
+    question_es: "Describe tu personalidad con «soy». Di 2–3 adjetivos y, si puedes, añade una razón con «porque». Ej.: «Soy simpático y trabajador porque…»",
+    question_en: "Describe your personality using “soy”. Say 2–3 adjectives and, if possible, add a reason with “because”.",
+    speak: "Describe tu personalidad.",
+    criteria: [
+      { id:"soy_personalidad", label:"Adjetivos de personalidad con «soy»", required:true,
+        patterns:[/soy\s+\p{L}+/u, ...PERSONALITY_ADJ],
+        hint:"Usa «soy» + adjetivo. Ej.: «Soy simpático y amable.»" }
+    ]
+  },
+
+  family: {
+    code: "2A",
+    title: "La familia",
+    question_es: "Habla de tu familia. Sigue este orden: 1) En mi familia somos… 2) Tengo… (madre/padre/hermanos…) 3) Mi … se llama… 4) Es… (físico / personalidad / profesión) 5) Me llevo bien/mal con…",
+    question_en: "Talk about your family. Follow this order: 1) There are … people. 2) I have… (mother/father/siblings…) 3) My … is called… 4) He/She is… (appearance/personality/job) 5) I get on well/badly with…",
+    speak: "Habla de tu familia.",
+    criteria: [
+      { id:"miembros", label:"Cuántos miembros hay", required:true,
+        patterns:[/somos\s+\d+/u, /hay\s+\d+/u, "en mi familia somos","miembros","personas"],
+        hint:"Di cuántos sois. Ej.: «En mi familia somos cinco.»" },
+      { id:"quienes", label:"Quiénes son (vocabulario de familia)", required:true,
+        patterns:[...FAMILY_VOCAB],
+        hint:"Menciona familiares (madre, padre, hermano…)."},
+      { id:"nombres", label:"Nombre de alguien (se llama...)", required:true,
+        patterns:[/se llama\s+\p{L}+/u, "se llama","mi madre se llama","mi padre se llama"],
+        hint:"Di el nombre de alguien. Ej.: «Mi madre se llama Ana.»" },
+      { id:"descripcion", label:"Breve descripción (físico / personalidad / profesión)", required:true,
+        patterns:[
+          "es alto","es alta","es bajo","es baja","tiene el pelo","tiene los ojos", ...PHYSICAL_WORDS, ...HAIR_WORDS, ...EYES_WORDS,
+          "es simpatico","es simpatica","amable","divertido","divertida","serio","seria","trabajador","trabajadora","inteligente",
+          "trabaja","es profesor","es profesora","es medico","es medica","es enfermero","es enfermera","es camarero","es camarera",
+          "es policia","es policía","es abogado","es abogada","es ingeniero","es ingeniera","es funcionario","es estudiante"
+        ],
+        hint:"Describe a alguien (físico, personalidad o profesión). Ej.: «Mi hermano es divertido» o «Mi padre es médico»." },
+      { id:"relacion", label:"Relación: me llevo bien/mal con alguien", required:true,
+        patterns:[/me llevo bien con\s+\p{L}+/u, /me llevo mal con\s+\p{L}+/u, "me llevo bien con mi","me llevo mal con mi"],
+        hint:"Di con quién te llevas bien o mal. Ej.: «Me llevo bien con mi hermano.»" }
+    ]
+  },
+
+  best_friend: {
+    code: "3A",
+    title: "Mi mejor amigo/a",
+    question_es: "Habla de tu mejor amigo/a. Di: 1) Se llama… 2) Nos conocemos desde… / Nos conocimos en… 3) Es… / Tiene… (descripción) 4) Le gusta… (afición) 5) Es mi mejor amigo/a porque…",
+    question_en: "Talk about your best friend. Say: 1) Name. 2) Since when/how you met. 3) Description. 4) Hobby. 5) Why they are your best friend.",
+    speak: "Habla de tu mejor amigo.",
+    criteria: [
+      { id:"nombre", label:"Nombre", required:true,
+        patterns:[/se llama\s+\p{L}+/u, "mi mejor amigo se llama","mi mejor amiga se llama"],
+        hint:"Di su nombre. Ej.: «Mi mejor amigo se llama Daniel.»" },
+      { id:"desde_cuando", label:"Cómo/se conocen desde cuándo", required:true,
+        patterns:["nos conocemos desde","lo conozco desde","la conozco desde","desde hace","nos conocimos","en primaria","en el colegio","en el instituto"],
+        hint:"Di desde cuándo o cómo os conocisteis. Ej.: «Nos conocemos desde primaria.»" },
+      { id:"descripcion", label:"Descripción breve (físico o personalidad)", required:true,
+        patterns:["tiene el pelo","tiene los ojos","es alto","es alta","es bajo","es baja","es simpatico","es simpatica","amable","divertido","divertida","serio","seria","inteligente", ...PHYSICAL_WORDS, ...HAIR_WORDS, ...EYES_WORDS],
+        hint:"Descríbelo/a. Ej.: «Es simpático y tiene el pelo corto.»" },
+      { id:"aficion", label:"Algo que le gusta hacer (afición)", required:true,
+        patterns:["le gusta","le encanta","le gusta hacer","le encanta hacer", ...HOBBIES],
+        hint:"Di una afición. Ej.: «Le gusta jugar al fútbol.»" }
+    ]
+  },
+
+  house: {
+    code: "4A",
+    title: "Mi casa",
+    question_es: "Describe tu casa. Di: 1) Vivo en… (casa/piso). 2) Tiene … plantas. 3) Hay… (habitaciones). 4) Mi habitación favorita es… porque…",
+    question_en: "Describe your home. Say: 1) I live in a house/flat. 2) It has … floors. 3) There is/are… (rooms). 4) My favourite room is… because…",
+    speak: "Habla de tu casa.",
+    criteria: [
+      { id:"tipo", label:"Tipo de casa", required:true,
+        patterns:["vivo en un piso","vivo en una casa","piso","apartamento","casa","casa adosada","chalet"],
+        hint:"Di el tipo de casa. Ej.: «Vivo en una casa / en un piso.»" },
+      { id:"plantas", label:"Número de plantas", required:true,
+        patterns:["una planta","dos plantas","tres plantas", /tiene\s+\d+\s+plantas?/u, /hay\s+\d+\s+plantas?/u],
+        hint:"Di cuántas plantas tiene. Ej.: «Tiene dos plantas.»" },
+      { id:"habitaciones", label:"Habitaciones", required:true,
+        patterns:["habitaciones","dormitorios","salon","salón","cocina","baño","bano","jardin","jardín","garaje"],
+        hint:"Menciona habitaciones. Ej.: «Hay cocina, salón y tres dormitorios.»" },
+      { id:"favorita", label:"Habitación favorita", required:true,
+        patterns:["mi habitación favorita es","mi habitacion favorita es","mi cuarto favorito es","mi favorita es","mi lugar favorito es"],
+        hint:"Di tu habitación favorita. Ej.: «Mi habitación favorita es el salón.»" }
+    ]
+  },
+
+  bedroom: {
+    code: "4B",
+    title: "Mi dormitorio",
+    question_es: "Habla de tu dormitorio. Di: 1) Me gusta / No me gusta mi dormitorio. 2) Porque… (es grande/pequeño, cómodo, bonito, etc.). 3) Hay… (cama, escritorio…).",
+    question_en: "Talk about your bedroom. Say: 1) I like/don’t like it. 2) Because… (big/small, comfortable, nice…). 3) There is/are… (bed, desk…).",
+    speak: "Habla de tu dormitorio.",
+    criteria: [
+      { id:"gusta", label:"Si te gusta (o no)", required:true,
+        patterns:["me gusta mi dormitorio","me gusta mi habitación","me encanta mi habitación","no me gusta mi habitación","no me gusta mi dormitorio"],
+        hint:"Di si te gusta o no. Ej.: «Me gusta mi dormitorio.»" },
+      { id:"por_que", label:"Por qué (razón)", required:true,
+        patterns:["porque","ya que","es grande","es pequeño","es pequeno","es cómodo","es comodo","es bonito","tengo","hay","mi cama","mi escritorio","ordenado","desordenado"],
+        hint:"Da una razón con «porque». Ej.: «Me gusta porque es cómodo.»" }
+    ]
+  },
+
+  area: {
+    code: "5A",
+    title: "Mi barrio / mi pueblo",
+    question_es: "Habla de tu barrio/pueblo. Di: 1) Vivo en… 2) Está en el centro / en las afueras. 3) Hay… (parque, cine, supermercado…). 4) Me gusta porque…",
+    question_en: "Talk about your area/town. Say: 1) I live in… 2) In the centre/outskirts. 3) There is/are… (park, cinema, shops…). 4) I like it because…",
+    speak: "Habla de tu barrio o pueblo.",
+    criteria: [
+      { id:"donde", label:"Dónde vives", required:true,
+        patterns:[/vivo en\s+\p{L}+/u, "vivo en","en mi barrio","en mi pueblo","en mi ciudad"],
+        hint:"Di dónde vives. Ej.: «Vivo en Balbriggan.»" },
+      { id:"centro_afueras", label:"Centro o afueras", required:true,
+        patterns:["en el centro","en las afueras","cerca del centro","lejos del centro"],
+        hint:"Di si vives en el centro o en las afueras." },
+      { id:"instalaciones", label:"Instalaciones (hay...)", required:true,
+        patterns:["hay", ...TOWN_FACILITIES],
+        hint:"Menciona instalaciones. Ej.: «Hay un parque y un cine.»" }
+    ]
+  },
+
+  school_general: {
+    code: "6A",
+    title: "Mi instituto",
+    question_es: "Habla de tu instituto. Di: 1) Es grande/pequeño y moderno/antiguo. 2) Es mixto / de chicos / de chicas. 3) Hay… (instalaciones). 4) Me gusta porque…",
+    question_en: "Talk about your school. Say: 1) Big/small and modern/old. 2) Mixed/boys/girls. 3) There is/are… (facilities). 4) I like it because…",
+    speak: "Habla de tu instituto.",
+    criteria: [
+      { id:"tamano", label:"Grande o pequeño", required:true,
+        patterns:["es grande","es pequeño","es pequeno","grande","pequeño","pequeno"],
+        hint:"Di si es grande o pequeño. Ej.: «Mi instituto es grande.»" },
+      { id:"moderno", label:"Moderno (o antiguo)", required:true,
+        patterns:["es moderno","es nuevo","es antiguo","es viejo","moderno","antiguo","viejo"],
+        hint:"Di si es moderno o antiguo. Ej.: «Es moderno.»" },
+      { id:"tipo", label:"Mixto / chicos / chicas", required:true,
+        patterns:["mixto","es mixto","solo chicos","solo chicas","es de chicos","es de chicas"],
+        hint:"Di si es mixto o solo de chicos/chicas." },
+      { id:"instalaciones", label:"Instalaciones del instituto", required:true,
+        patterns:["hay", ...SCHOOL_FACILITIES],
+        hint:"Menciona instalaciones. Ej.: «Hay gimnasio y biblioteca.»" }
+    ]
+  },
+
+  school_rules: {
+    code: "6B",
+    title: "Normas en mi instituto",
+    question_es: "Habla de las normas. Di: 1) En mi instituto se puede / no se puede usar el móvil… 2) Está prohibido / se puede mascar chicle…",
+    question_en: "Talk about school rules. Say: 1) You can/can’t use your phone… 2) Chewing gum is allowed/forbidden…",
+    speak: "Habla de las normas del instituto.",
+    criteria: [
+      { id:"moviles", label:"Uso de móviles", required:true,
+        patterns:["telefono movil","teléfono móvil","movil","móvil","se puede usar","no se puede usar","esta prohibido","está prohibido","prohibido","en clase","en el patio"],
+        hint:"Di si se pueden usar móviles. Ej.: «No se puede usar el móvil en clase.»" },
+      { id:"chicle", label:"Chicle", required:true,
+        patterns:["chicle","comer chicle","mascar chicle","se puede comer chicle","no se puede comer chicle","prohibido chicle"],
+        hint:"Di si se puede comer/mascar chicle. Ej.: «Está prohibido comer chicle.»" }
+    ]
+  },
+
+  teachers: {
+    code: "6C",
+    title: "¿Cómo son los profesores?",
+    question_es: "Habla de los profesores. Di: 1) Son estrictos/amables… 2) Mi profesor/a favorito/a es… 3) Porque… (explica bien, me ayuda, es paciente…).",
+    question_en: "Talk about teachers. Say: 1) They are strict/kind… 2) My favourite teacher is… 3) Because… (explains well, helps me, patient…).",
+    speak: "Habla de los profesores.",
+    criteria: [
+      { id:"estrictos_amables", label:"Estrictos o amables", required:true,
+        patterns:["estricto","estricta","estrictos","estrictas","amable","amables","simpatico","simpatica","bueno","buena"],
+        hint:"Di cómo son. Ej.: «Los profesores son amables, pero algunos son estrictos.»" },
+      { id:"favorito", label:"Profesor/a favorito/a", required:true,
+        patterns:["mi profesor favorito es","mi profesora favorita es","mi profe favorito es","mi profe favorita es"],
+        hint:"Di quién es tu favorito/a. Ej.: «Mi profesor favorito es el de español.»" },
+      { id:"por_que", label:"Por qué (razón)", required:true,
+        patterns:["porque","ya que","explica bien","me ayuda","es divertido","es paciente","es comprensivo","es comprensiva"],
+        hint:"Da una razón. Ej.: «Porque explica muy bien y me ayuda.»" }
+    ]
+  },
+
+
+  uniform: {
+    code: "6D",
+    title: "El uniforme",
+    question_es: "Habla del uniforme. Di: 1) Hay que llevar uniforme / Es obligatorio. 2) Consiste en… (jersey, camisa, pantalón o falda, zapatos; corbata opcional).",
+    question_en: "Talk about the uniform. Say: 1) It is compulsory. 2) It includes… (jumper, shirt, trousers or skirt, shoes; tie optional).",
+    speak: "Habla del uniforme.",
+    criteria: [
+      { id:"obligatorio", label:"Hay que llevar uniforme", required:true,
+        patterns:["hay que llevar uniforme","llevo uniforme","llevamos uniforme","es obligatorio","uniforme obligatorio","tenemos uniforme"],
+        hint:"Di si hay que llevar uniforme. Ej.: «Hay que llevar uniforme.»" },
+      { id:"prendas", label:"En qué consiste (jersey, pantalón/falda, zapatos, camisa)", required:true,
+        patterns:["jersey","sudadera","pantalon","pantalón","pantalones","falda","zapatos","camisa","corbata"],
+        hint:"Describe el uniforme. Ej.: «Llevo jersey, camisa y pantalón/falda. Normalmente llevo zapatos.»" }
+    ]
+  },
+
+  free_time: {
+    code: "7A",
+    title: "Mi tiempo libre",
+    question_es: "Habla de tu tiempo libre. Di 2–3 aficiones usando: «En mi tiempo libre…», «Me gusta…», «Me encanta…». Ej.: «Me gusta jugar al fútbol y escuchar música».",
+    question_en: "Talk about your free time. Say 2–3 hobbies using: “In my free time…”, “I like…”, “I love…”.",
+    speak: "Habla de tu tiempo libre.",
+    criteria: [
+      { id:"aficiones", label:"Aficiones", required:true,
+        patterns:["en mi tiempo libre","me gusta","me encanta","suelo", ...HOBBIES],
+        hint:"Menciona al menos una afición. Ej.: «En mi tiempo libre me gusta jugar a los videojuegos.»" }
+    ]
+  },
+
+  weekends: {
+    code: "7B",
+    title: "Los fines de semana",
+    question_es: "Habla de los fines de semana (rutina). Usa: «Los fines de semana normalmente/suelo…». Di 2–3 cosas que haces (por la mañana / por la tarde).",
+    question_en: "Talk about weekends (routine). Use: “At weekends I usually…”. Say 2–3 things you do (morning/afternoon).",
+    speak: "Habla de los fines de semana.",
+    criteria: [
+      { id:"rutina", label:"Qué haces los fines de semana", required:true,
+        patterns:["los fines de semana","normalmente","suelo","a veces","siempre","casi siempre","nunca","por la mañana","por la tarde","por la noche","quedo con","salgo con","voy al","voy a la","voy a"],
+        hint:"Di qué haces normalmente. Ej.: «Los fines de semana suelo quedar con mis amigos.»" }
+    ]
+  },
+
+  last_weekend: {
+    code: "8A",
+    title: "El fin de semana pasado",
+    question_es: "Habla del fin de semana pasado (pasado). Usa 2–3 frases con: «Fui…», «Hice…», «Estudié…», «Salí…». Ej.: «El fin de semana pasado fui al cine».",
+    question_en: "Talk about last weekend (past). Use 2–3 past sentences: “I went…”, “I did…”, “I studied…”, “I went out…”.",
+    speak: "Habla del fin de semana pasado.",
+    criteria: [
+      { id:"pasado", label:"Acciones en pasado (fui/estudié/salí...)", required:true,
+        patterns:["el fin de semana pasado","ayer","fui","estudie","estudié","sali","salí","jugué","jugue","vi","hice","comi","comí","fui al cine","fui a la playa","fui al centro comercial","estudié para","estudie para"],
+        hint:"Usa el pasado. Ej.: «El fin de semana pasado fui al cine y estudié para los exámenes.»" }
+    ]
+  },
+
+  next_weekend: {
+    code: "9A",
+    title: "El fin de semana que viene",
+    question_es: "Habla del fin de semana que viene (futuro). Usa: «Este fin de semana voy a…». Di 2–3 planes. Ej.: «Voy a ir a la playa» o «Voy a estudiar».",
+    question_en: "Talk about next weekend (future). Use: “This weekend I’m going to…”. Say 2–3 plans.",
+    speak: "Habla del fin de semana que viene.",
+    criteria: [
+      { id:"planes", label:"Planes en futuro (voy a...)", required:true,
+        patterns:["este fin de semana","el fin de semana que viene","tengo planes","planes","voy a","pienso","quiero"],
+        hint:"Habla en futuro. Ej.: «Este fin de semana voy a ir al cine.»" }
+    ]
+  },
+
+  future_plans: {
+    code: "10A",
+    title: "Proyectos de futuro",
+    question_es: "Proyectos de futuro. Di: 1) Después de los exámenes voy a… 2) El año que viene me gustaría… 3) Porque… (si puedes).",
+    question_en: "Future plans. Say: 1) After the exams I’m going to… 2) Next year I would like to… 3) Because… (if you can).",
+    speak: "Habla de tus proyectos de futuro.",
+    criteria: [
+      { id:"despues_examenes", label:"Después de los exámenes (voy a...)", required:true,
+        patterns:[
+          "despues de los examenes","después de los exámenes","cuando termine los examenes","cuando termine los exámenes",
+          "voy a","pienso","quiero"
+        ],
+        hint:"Di qué vas a hacer después de los exámenes usando «voy a». Ej.: «Después de los exámenes voy a salir con mis amigos.»" },
+      { id:"ano_que_viene", label:"El año que viene (me gustaría...)", required:true,
+        patterns:[
+          "el ano que viene","el año que viene","el proximo ano","el próximo año",
+          "me gustaria","me gustaría","quiero","pienso"
+        ],
+        hint:"Di qué te gustaría hacer el año que viene. Ej.: «El año que viene me gustaría ir a España.»" }
+    ]
+  },
+
+  spain_holidays: {
+    code: "11A",
+    title: "Vacaciones en España",
+    question_es: "Vacaciones en España. Di: 1) He estado / Nunca he estado en España. 2) Fui a… (ciudad). 3) Me gustó / No me gustó porque… 4) La comida española es… (me encanta/no me gusta).",
+    question_en: "Holidays in Spain. Say: 1) I have / have never been to Spain. 2) I went to… (city). 3) I liked/didn’t like it because… 4) Spanish food is… (I love/don’t like it).",
+    speak: "Habla de tus vacaciones en España.",
+    criteria: [
+      { id:"ha_estado", label:"Has estado en España (sí/no)", required:true,
+        patterns:[
+          "he estado en espana","he estado en españa","he ido a espana","he ido a españa","estuve en espana","estuve en españa",
+          "nunca he estado","no he estado nunca","no he ido nunca","no he estado en espana","no he estado en españa"
+        ],
+        hint:"Di si has estado en España o no. Ej.: «He estado en España.» / «Nunca he estado en España.»" },
+      { id:"ciudad", label:"Ciudad (fui a / estuve en...)", required:true,
+        patterns:[
+          "fui a","estuve en","visite","visité","madrid","barcelona","valencia","sevilla","malaga","málaga","granada","bilbao","cadiz","cádiz"
+        ],
+        hint:"Di una ciudad. Ej.: «Fui a Barcelona.»" },
+      { id:"te_gusto", label:"Te gustó (me gustó porque...)", required:true,
+        patterns:[
+          "me gusto","me gustó","me encanto","me encantó","no me gusto","no me gustó","me gusto porque","me gustó porque","porque"
+        ],
+        hint:"Di si te gustó y da una razón con «porque». Ej.: «Me gustó porque hacía buen tiempo.»" },
+      { id:"comida", label:"Opinión sobre la comida española", required:true,
+        patterns:[
+          "la comida","comida espanola","comida española","me encanta la comida","me gusta la comida","no me gusta la comida",
+          "deliciosa","rica","sabrosa","picante","variada","tapas","paella","tortilla","jamon","jamón","gazpacho"
+        ],
+        hint:"Da tu opinión sobre la comida. Ej.: «La comida española es deliciosa. Me encantan las tapas.»" }
+    ]
+  },
+
+
+
+  };
+
+/* =========================
+   UI: pintar tarjetas
+   ========================= */
+const topicsGrid = document.getElementById("topicsGrid");
+let currentKey = null;
+
+function renderTopics(){
+  topicsGrid.innerHTML = "";
+  Object.entries(TOPICS).forEach(([key, t]) => {
+    const div = document.createElement("div");
+    div.className = "topic-card";
+    const reqCount = t.criteria.filter(c=>c.required).length;
+    const optCount = t.criteria.filter(c=>!c.required).length;
+    div.innerHTML = `
+      <h3>${t.title}</h3>
+      <p><small>${reqCount} puntos obligatorios${optCount ? ` + ${optCount} extra` : ""}</small></p>
+      <span class="pill">${t.code}</span>
+      <div style="margin-top:10px;">
+        <button onclick="selectTopic('${key}')">Seleccionar</button>
+      </div>
+    `;
+    topicsGrid.appendChild(div);
+  });
+}
+renderTopics();
+
+function selectTopic(key){
+  currentKey = key;
+  const t = TOPICS[key];
+  document.getElementById("topicName").textContent = `${t.code} — ${t.title}`;
+  document.getElementById("topicQuestionES").textContent = t.question_es || t.question || "—";
+  document.getElementById("topicQuestionEN").textContent = t.question_en || "—";
+  setStatus("Tema seleccionado. Pulsa «Empezar» para escuchar y responder.");
+  document.getElementById("btnStart").disabled = false;
+  document.getElementById("btnAnalyze").disabled = false;
+  hideResults();
+
+}
+
+/* ==========================
+   Speech: síntesis + reconocimiento
+   ========================= */
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let isListening = false;
+
+function canRecognize(){ return !!SpeechRecognition; }
+
+function buildRecognition(){
+  const r = new SpeechRecognition();
+  r.lang = "es-ES";
+  r.continuous = false;
+  r.interimResults = false;
+  r.maxAlternatives = 1;
+
+  r.onresult = (event) => {
+    const transcript = event.results[0][0].transcript || "";
+    document.getElementById("transcript").value = transcript;
+    setStatus("Transcripción lista. Puedes corregirla y pulsar «Analizar».");
+    stopListeningUI();
+    analyzeNow();
+  };
+
+  r.onerror = () => {
+    stopListeningUI();
+    setStatus("⚠️ No se pudo usar el micrófono. Escribe o pega tu texto y pulsa «Analizar».");
+  };
+
+  r.onend = () => {
+    if(isListening){
+      stopListeningUI();
+      setStatus("Fin de escucha. Si no salió texto, prueba otra vez o pega tu respuesta.");
+    }
+  };
+
+  return r;
+}
+
+function speakQuestion(text){
+  return new Promise((resolve) => {
+    const synth = window.speechSynthesis;
+    if(!synth){ resolve(); return; }
+
+    function speakWithSpanishVoice(){
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "es-ES";
+      u.rate = 0.9;
+      u.pitch = 1.0;
+
+      // Try to force a Spanish voice (Spain preferred)
+      const voices = synth.getVoices();
+      const spanishVoice =
+        voices.find(v => v.lang === "es-ES") ||
+        voices.find(v => v.lang.startsWith("es")) ||
+        null;
+
+      if(spanishVoice){
+        u.voice = spanishVoice;
+      }
+
+      u.onend = resolve;
+      synth.speak(u);
+    }
+
+    // Voices may load asynchronously (Safari/iOS issue)
+    if(synth.getVoices().length === 0){
+      synth.onvoiceschanged = () => {
+        speakWithSpanishVoice();
+      };
+    } else {
+      speakWithSpanishVoice();
+    }
+  });
+}
+
+async function startFlow(){
+  if(!currentKey) return;
+  hideResults();
+
+  const t = TOPICS[currentKey];
+  if(!canRecognize()){
+    setStatus("Este navegador no soporta reconocimiento de voz aquí. Pega tu respuesta y analiza.");
+    return;
+  }
+
+  setStatus("🔊 Escucha la pregunta...");
+  await speakQuestion(t.speak || t.title);
+
+  if(!recognition) recognition = buildRecognition();
+
+  setStatus("🎤 Habla ahora (45–90s)...");
+  try{
+    isListening = true;
+    startListeningUI();
+    recognition.start();
+  }catch{
+    stopListeningUI();
+    setStatus("⚠️ No se pudo iniciar el micrófono. Pega tu respuesta y analiza.");
+  }
+}
+
+function stopListening(){
+  if(recognition && isListening){
+    try { recognition.stop(); } catch {}
+  }
+  stopListeningUI();
+  setStatus("Escucha detenida. Puedes analizar lo que haya en la caja.");
+}
+
+function startListeningUI(){
+  document.getElementById("btnStop").disabled = false;
+  document.getElementById("btnStart").disabled = true;
+  document.getElementById("btnStop").classList.add("listening");
+}
+
+function stopListeningUI(){
+  isListening = false;
+  document.getElementById("btnStop").disabled = true;
+  document.getElementById("btnStart").disabled = false;
+  document.getElementById("btnStop").classList.remove("listening");
+}
+
+/* =========================
+   Análisis: normalización + matching
+   ========================= */
+function normalizeText(s){
+  return (s || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[“”"']/g," ")
+    .replace(/[^a-z0-9ñ\s]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function matchOne(pattern, textNorm){
+  if(pattern instanceof RegExp){
+    try { return pattern.test(textNorm); } catch { return false; }
+  }
+  const p = normalizeText(pattern);
+  if(!p) return false;
+  return textNorm.includes(p);
+}
+
+function evaluateCriteria(criteria, textRaw){
+  const textNorm = normalizeText(textRaw);
+  const results = criteria.map(c => {
+    const ok = c.patterns.some(p => matchOne(p, textNorm));
+    let status = "bad";
+    if(ok) status = "ok";
+    else status = c.required ? "bad" : "warn";
+
+    let evidence = "";
+    if(ok){
+      const first = c.patterns.find(p => matchOne(p, textNorm));
+      evidence = (first instanceof RegExp) ? "Detectado por patrón" : `Detectado: «${first}»`;
+    }
+    return { ...c, status, evidence };
+  });
+
+  const required = results.filter(r => r.required);
+  const requiredOK = required.filter(r => r.status === "ok").length;
+  const requiredTotal = required.length;
+
+  let overall = "bad";
+  if(requiredOK === requiredTotal) overall = "ok";
+  else if(requiredOK >= Math.max(1, Math.floor(requiredTotal * 0.6))) overall = "warn";
+
+  return { results, overall, requiredOK, requiredTotal };
+}
+
+function analyzeNow(){
+  if(!currentKey){
+    setStatus("Elige un tema primero.");
+    return;
+  }
+  const t = TOPICS[currentKey];
+  const text = document.getElementById("transcript").value.trim();
+  if(!text){
+    setStatus("No hay respuesta. Habla o pega un texto y vuelve a analizar.");
+    return;
+  }
+
+  const { results, overall, requiredOK, requiredTotal } = evaluateCriteria(t.criteria, text);
+
+  const checklist = document.getElementById("checklist");
+  checklist.style.display = "block";
+  checklist.innerHTML = "";
+
+  results.forEach(r => {
+    const row = document.createElement("div");
+    row.className = "item";
+    const tag = r.status === "ok" ? "OK" : (r.status === "warn" ? "DUDOSO" : "FALTA");
+    row.innerHTML = `
+      <div style="flex:1;">
+        <div><b>${r.label}</b> ${r.required ? '<span class="small">(obligatorio)</span>' : '<span class="small">(extra)</span>'}</div>
+        <div class="evidence">
+          ${r.status === "ok" ? (r.evidence || "Detectado") : r.hint}
+        </div>
+      </div>
+      <div class="tag ${r.status}">${tag}</div>
+    `;
+    checklist.appendChild(row);
+  });
+
+  const summary = document.getElementById("summary");
+  summary.style.display = "block";
+  summary.className = overall;
+  if(overall === "ok"){
+    summary.innerHTML = `<b>¡Muy bien!</b> Has cubierto todos los puntos obligatorios (${requiredOK}/${requiredTotal}).`;
+  } else if(overall === "warn"){
+    summary.innerHTML = `<b>Buen intento.</b> Has cubierto ${requiredOK}/${requiredTotal} puntos obligatorios. Repite añadiendo lo que falta.`;
+  } else {
+    summary.innerHTML = `<b>Te falta información clave.</b> Solo ${requiredOK}/${requiredTotal} puntos obligatorios. Usa las frases modelo y reintenta.`;
+  }
+
+  setStatus("Análisis completado.");
+}
+
+function hideResults(){
+  document.getElementById("checklist").style.display = "none";
+  document.getElementById("summary").style.display = "none";
+}
+
+function resetAll(){
+  currentKey = null;
+  document.getElementById("topicName").textContent = "—";
+  document.getElementById("topicQuestionES").textContent = "—";
+  document.getElementById("topicQuestionEN").textContent = "—";
+  document.getElementById("transcript").value = "";
+  document.getElementById("btnStart").disabled = true;
+  document.getElementById("btnStop").disabled = true;
+  document.getElementById("btnAnalyze").disabled = true;
+  hideResults();
+  setStatus("Esperando selección...");
+}
+
+function setStatus(msg){
+  document.getElementById("status").textContent = msg;
+}
+
+if(!canRecognize()){
+  setStatus("Este navegador no soporta reconocimiento de voz aquí. Puedes usarlo pegando tu respuesta y analizando.");
+}
+</script>
+</body>
+</html>
