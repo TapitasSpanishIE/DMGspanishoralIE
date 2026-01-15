@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LC Spanish Oral Master - Ordinary Level</title>
+  <title>Práctica Oral Leaving Certificate - Ordinary Level</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -13,27 +13,21 @@
       --text-muted: #64748b; --radius: 12px;
       --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
-
     body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
     .container { max-width: 1100px; margin: 0 auto; }
-
     header { text-align: center; margin-bottom: 30px; padding: 25px; background: white; border-radius: var(--radius); box-shadow: var(--shadow); border-top: 5px solid var(--primary); }
     h1 { margin: 0; font-weight: 800; color: var(--text-main); font-size: 1.8rem; }
     .author-badge { display: inline-block; margin-top: 10px; font-size: 0.85rem; background: #eff6ff; padding: 5px 15px; border-radius: 20px; color: var(--primary-dark); font-weight: 600; }
-
     .app-grid { display: grid; grid-template-columns: 350px 1fr; gap: 24px; }
     @media (max-width: 900px) { .app-grid { grid-template-columns: 1fr; } }
-
     .card { background: var(--card-bg); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid #e2e8f0; height: fit-content; }
     h2 { font-size: 1.1rem; margin-top: 0; display: flex; align-items: center; gap: 8px; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
-
     .topics-container { display: grid; grid-template-columns: 1fr; gap: 10px; max-height: 600px; overflow-y: auto; padding-right: 5px; }
-    .topic-btn { background: white; border: 1px solid #e2e8f0; padding: 12px 15px; border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; align-items: center; gap: 12px; }
+    .topic-btn { background: white; border: 1px solid #e2e8f0; padding: 12px 15px; border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; align-items: center; gap: 12px; width: 100%; }
     .topic-btn:hover { border-color: var(--primary); background: #f0f7ff; }
     .topic-btn.active { border-color: var(--primary); background: var(--primary); color: white; transform: translateX(5px); }
     .topic-code { font-weight: 800; font-size: 0.8rem; background: #f1f5f9; padding: 4px 8px; border-radius: 6px; color: var(--primary-dark); }
     .active .topic-code { background: rgba(255,255,255,0.2); color: white; }
-
     .btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
     button.main-btn { padding: 12px 20px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
     button:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -41,18 +35,13 @@
     .btn-stop { background: var(--danger); color: white; }
     .btn-analyze { background: var(--primary); color: white; }
     .btn-reset { background: #f1f5f9; color: var(--text-muted); }
-
     textarea { width: 100%; border: 2px solid #f1f5f9; border-radius: 8px; padding: 15px; font-size: 1rem; font-family: inherit; box-sizing: border-box; resize: vertical; min-height: 120px; }
-    textarea:focus { border-color: var(--primary); outline: none; }
-
     .checklist-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-radius: 10px; background: #f8fafc; margin-bottom: 8px; border: 1px solid #e2e8f0; }
     .status-pill { font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; font-weight: 800; }
     .status-ok { background: #d1fae5; color: #065f46; }
-    .status-warn { background: #fef3c7; color: #92400e; }
     .status-bad { background: #fee2e2; color: #991b1b; }
-
     #summaryBox { padding: 20px; border-radius: var(--radius); margin-top: 20px; font-weight: 700; text-align: center; display: none; }
-    .pulse-mic { animation: pulse 1.5s infinite; }
+    .pulse-mic { animation: pulse 1.5s infinite; background: var(--danger) !important; }
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
   </style>
 </head>
@@ -60,8 +49,8 @@
 
 <div class="container">
   <header>
-    <h1>🇪🇸 Práctica Oral: Leaving Cert (OL)</h1>
-    <div class="author-badge">David Martín Guerrero — Spanish Teacher (Ireland)</div>
+    <h1>🇪🇸 Práctica Oral: Leaving Certificate (OL)</h1>
+    <div class="author-badge">David Martín Guerrero — Profesor de Español (Irlanda)</div>
   </header>
 
   <div class="app-grid">
@@ -74,7 +63,7 @@
       <section class="card">
         <h2 id="displayTitle">Selecciona un tema</h2>
         <div id="displayPrompt" style="margin-bottom: 15px;">
-          <p style="color: var(--text-muted)">Haz clic en un tema de la izquierda para comenzar la práctica.</p>
+          <p style="color: var(--text-muted)">Selecciona un tema de la izquierda para comenzar.</p>
         </div>
         
         <div class="btn-group">
@@ -87,9 +76,8 @@
       </section>
 
       <section class="card">
-        <h2>📝 Tu Respuesta</h2>
-        <textarea id="transcript" placeholder="Tu respuesta aparecerá aquí automáticamente al hablar, o puedes escribirla directamente..."></textarea>
-        
+        <h2>📝 Respuesta y Transcripción</h2>
+        <textarea id="transcript" placeholder="Tu respuesta aparecerá aquí al hablar..."></textarea>
         <div id="summaryBox"></div>
         <div id="checklist" style="margin-top: 20px;"></div>
       </section>
@@ -99,152 +87,203 @@
 
 <script>
 /* ============================================================
-   BASE DE DATOS Y LÓGICA (Tu contenido original de 900 líneas)
+   CONSTANTES Y VOCABULARIO
    ============================================================ */
-
 const MONTHS = /(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)/u;
-const FAMILY_VOCAB = ["madre","padre","mamá","mama","papá","papa","hermano","hermana","abuelo","abuela","tio","tía","tia","primo","prima","hijo","hija","sobrino","sobrina","padrastro","madrastra"];
+const FAMILY_VOCAB = ["madre","padre","mamá","papa","hermano","hermana","abuelo","abuela","tio","tía","primo","prima","hijo","hija","sobrino","sobrina","padrastro","madrastra"];
 const PHYSICAL_WORDS = ["alto","alta","bajo","baja","delgado","delgada","gordito","gordita","gordo","gorda"];
-const HAIR_WORDS = ["pelo","cabello","largo","corto","rizado","liso","ondulado","castaño","castano","rubio","rubia","moreno","morena","negro","negra","pelirrojo","pelirroja"];
+const HAIR_WORDS = ["pelo","cabello","largo","corto","rizado","liso","ondulado","castaño","rubio","moreno","negro","pelirrojo"];
 const EYES_WORDS = ["ojos","azules","verdes","marrones","negros"];
-const PERSONALITY_ADJ = ["simpatico","simpática","amable","divertido","divertida","serio","seria","trabajador","trabajadora","inteligente","tímido","timido","tímida","timida","generoso","generosa","agradable","responsable","perezoso","perezosa","hablador","habladora","cariñoso","carinoso","cariñosa","carinosa"];
-const HOBBIES = ["leer","escuchar musica","musica","bailar","cantar","dibujar","jugar","videojuegos","futbol","baloncesto","padel","natacion","correr","caminar","ir de compras","compras","ver series","ver peliculas","cine","cocinar","viajar","tocar la guitarra","guitarra"];
-const TOWN_FACILITIES = ["parque","polideportivo","piscina","cine","centro comercial","supermercado","tiendas","biblioteca","estacion","estación","hospital","farmacia","colegio","instituto","restaurantes","cafeterias","cafeterías","playa"];
-const SCHOOL_FACILITIES = ["gimnasio","biblioteca","laboratorio","cantina","cafeteria","cafetería","pistas","campo","aula de informatica","aula de informática","sala de ordenadores","comedor","patio","sala de musica","sala de música"];
+const PERSONALITY_ADJ = ["simpatico","amable","divertido","serio","trabajador","inteligente","tímido","generoso","agradable","responsable","perezoso","hablador","cariñoso"];
+const HOBBIES = ["leer","escuchar musica","bailar","cantar","dibujar","jugar","videojuegos","futbol","baloncesto","natacion","correr","caminar","compras","ver series","cine","cocinar","viajar","guitarra"];
+const TOWN_FACILITIES = ["parque","polideportivo","piscina","cine","centro comercial","supermercado","tiendas","biblioteca","estacion","hospital","farmacia","colegio","instituto","restaurantes","cafeterias","playa"];
+const SCHOOL_FACILITIES = ["gimnasio","biblioteca","laboratorio","cantina","cafeteria","pistas","campo","aula de informatica","comedor","patio","sala de musica"];
 
 const TOPICS = {
   about_me: {
-    code: "1A",
-    title: "Háblame de ti",
+    code: "1A", title: "Háblame de ti",
     question_es: "Háblame de ti. 1) Nombre 2) Edad 3) Cumpleaños 4) Celebración 5) De dónde eres.",
     question_en: "Talk about yourself. 1) Name 2) Age 3) Birthday 4) Celebration 5) Origin.",
     speak: "Habla de ti.",
     criteria: [
-      { id:"nombre", label:"Nombre", required:true, patterns:[/me llamo\s+\p{L}+/u, /mi nombre es\s+\p{L}+/u, /soy\s+\p{L}+/u], hint:"Di tu nombre. Ej: «Me llamo...»" },
-      { id:"edad", label:"Edad", required:true, patterns:[/tengo\s+\d+\s+anos?/u, /tengo\s+\p{L}+\s+anos?/u, "tengo","años","anos"], hint:"Di tu edad. Ej: «Tengo 17 años.»" },
-      { id:"fecha_cumple", label:"Cumpleaños", required:true, patterns:["mi cumpleaños es","mi cumple es", MONTHS, /\b(el|el dia)\s+\d{1,2}\b/u], hint:"Di fecha y mes." },
-      { id:"celebracion", label:"Celebración", required:true, patterns:["lo celebro","celebramos","fiesta","cena","comemos","con mi familia"], hint:"¿Cómo lo celebras?" },
-      { id:"origen", label:"Origen", required:true, patterns:[/soy de\s+\p{L}+/u, /vivo en\s+\p{L}+/u, "irlanda","dublin"], hint:"¿De dónde eres?" }
+      { id:"nombre", label:"Nombre", required:true, patterns:[/me llamo/u, /mi nombre es/u, /soy\s+\p{L}+/u], hint:"Di tu nombre. Ej: «Me llamo David.»" },
+      { id:"edad", label:"Edad", required:true, patterns:[/tengo\s+\d+/u, "años"], hint:"Di tu edad. Ej: «Tengo 17 años.»" },
+      { id:"fecha_cumple", label:"Cumpleaños", required:true, patterns:["mi cumpleaños es", MONTHS], hint:"Di fecha y mes." },
+      { id:"celebracion", label:"Celebración", required:true, patterns:["lo celebro","fiesta","cena","con mi familia"], hint:"¿Cómo lo celebras?" },
+      { id:"origen", label:"Origen", required:true, patterns:[/soy de/u, /vivo en/u, "irlanda","dublin"], hint:"¿De dónde eres?" }
     ]
   },
   physical: {
-    code: "1B",
-    title: "¿Cómo eres físicamente?",
+    code: "1B", title: "¿Cómo eres físicamente?",
     question_es: "Descríbete físicamente. 1) Alto/bajo 2) Constitución 3) Pelo 4) Ojos.",
     question_en: "Appearance: 1) Tall/short 2) Build 3) Hair 4) Eyes.",
     speak: "Describe cómo eres físicamente.",
     criteria: [
       { id:"altura", label:"Altura", required:true, patterns:["alto","alta","bajo","baja"], hint:"Ej: «Soy alto.»" },
       { id:"constitucion", label:"Constitución", required:true, patterns:["delgado","delgada","gordito","gordita"], hint:"Ej: «Soy delgado.»" },
-      { id:"pelo", label:"Pelo", required:true, patterns:[/tengo el pelo\s+\p{L}+/u, ...HAIR_WORDS], hint:"Color y tipo." },
-      { id:"ojos", label:"Ojos", required:true, patterns:[/tengo (los )?ojos\s+\p{L}+/u, ...EYES_WORDS], hint:"Color de ojos." }
+      { id:"pelo", label:"Pelo", required:true, patterns:[...HAIR_WORDS, "pelo"], hint:"Describe tu pelo." },
+      { id:"ojos", label:"Ojos", required:true, patterns:[...EYES_WORDS, "ojos"], hint:"Color de ojos." }
     ]
   },
   personality: {
-    code: "1C",
-    title: "Personalidad",
-    question_es: "Usa 2-3 adjetivos y da una razón con «porque».",
-    question_en: "Say 2-3 adjectives and a reason using 'porque'.",
+    code: "1C", title: "Personalidad",
+    question_es: "Describe tu personalidad con 2-3 adjetivos y una razón con «porque».",
+    question_en: "Describe your personality with 2-3 adjectives and a reason.",
     speak: "Describe tu personalidad.",
     criteria: [
-      { id:"personalidad", label:"Adjetivos", required:true, patterns:[/soy\s+\p{L}+/u, ...PERSONALITY_ADJ], hint:"Ej: «Soy amable y simpático.»" },
-      { id:"razon", label:"Razón (porque)", required:true, patterns:["porque","ya que","debido a"], hint:"Explica por qué eres así." }
+      { id:"adj", label:"Adjetivos", required:true, patterns:[...PERSONALITY_ADJ, /soy\s+/u], hint:"Usa 'soy' + adjetivos." },
+      { id:"razon", label:"Razón", required:true, patterns:["porque","ya que"], hint:"Usa 'porque' para explicar." }
     ]
   },
   family: {
-    code: "2A",
-    title: "La familia",
+    code: "2A", title: "La familia",
     question_es: "1) Cuántos sois 2) Quiénes 3) Nombres 4) Descripción 5) Relación.",
     question_en: "1) Numbers 2) Who 3) Names 4) Description 5) Relationship.",
     speak: "Habla de tu familia.",
     criteria: [
-      { id:"miembros", label:"Miembros", required:true, patterns:[/somos\s+\d+/u, "en mi familia"], hint:"Ej: «Somos cuatro.»" },
-      { id:"nombres", label:"Nombres", required:true, patterns:[/se llama/u, "mi madre se llama"], hint:"Menciona nombres." },
-      { id:"relacion", label:"Relación", required:true, patterns:["me llevo bien","me llevo mal"], hint:"Ej: «Me llevo bien con mi hermano.»" }
+      { id:"somos", label:"Miembros", required:true, patterns:[/somos/u, /hay/u, "familia"], hint:"¿Cuántos sois?" },
+      { id:"quienes", label:"Quiénes", required:true, patterns:FAMILY_VOCAB, hint:"Menciona a tu madre, padre, etc." },
+      { id:"nombres", label:"Nombres", required:true, patterns:[/se llama/u], hint:"Dime sus nombres." },
+      { id:"relacion", label:"Relación", required:true, patterns:["me llevo bien","me llevo mal"], hint:"¿Cómo te llevas con ellos?" }
     ]
   },
   best_friend: {
-    code: "3A",
-    title: "Mejor amigo/a",
-    question_es: "Nombre, descripción y por qué es tu mejor amigo.",
-    question_en: "Name, description and why they are your best friend.",
+    code: "3A", title: "Mejor amigo/a",
+    question_es: "Nombre, desde cuándo os conocéis, descripción y afición.",
+    question_en: "Name, how long you've known each other, description and hobby.",
     speak: "Habla de tu mejor amigo.",
     criteria: [
-      { id:"nombre", label:"Nombre", required:true, patterns:[/se llama/u, "mi mejor amigo"], hint:"Ej: «Se llama Juan.»" },
-      { id:"aficion", label:"Hobby del amigo", required:true, patterns:["le gusta","le encanta", ...HOBBIES], hint:"¿Qué le gusta?" }
+      { id:"nombre", label:"Nombre", required:true, patterns:[/se llama/u, "mejor amigo"], hint:"Dime su nombre." },
+      { id:"desde", label:"Desde cuándo", required:true, patterns:["conocemos","desde","primaria"], hint:"¿Desde cuándo os conocéis?" },
+      { id:"hobby", label:"Afición", required:true, patterns:[...HOBBIES, "gusta"], hint:"¿Qué le gusta hacer?" }
     ]
   },
   house: {
-    code: "4A",
-    title: "Mi casa",
-    question_es: "Tipo de casa, plantas, habitaciones y tu favorita.",
-    question_en: "Type of house, floors, rooms and favorite one.",
+    code: "4A", title: "La casa",
+    question_es: "Tipo de vivienda, plantas, habitaciones y estancia favorita.",
+    question_en: "Type of home, floors, rooms and favorite room.",
     speak: "Habla de tu casa.",
     criteria: [
-      { id:"tipo", label:"Tipo", required:true, patterns:["casa","piso","apartamento"], hint:"¿Dónde vives?" },
-      { id:"favorita", label:"Favorita", required:true, patterns:["mi habitación favorita","mi cuarto favorito"], hint:"¿Cuál prefieres?" }
+      { id:"tipo", label:"Tipo de casa", required:true, patterns:["casa","piso","apartamento"], hint:"¿Dónde vives?" },
+      { id:"habitaciones", label:"Habitaciones", required:true, patterns:["cocina","salon","dormitorio","baño"], hint:"Menciona habitaciones." },
+      { id:"favorita", label:"Favorita", required:true, patterns:["favorita","prefiero"], hint:"¿Cuál es tu favorita?" }
+    ]
+  },
+  bedroom: {
+    code: "4B", title: "Dormitorio",
+    question_es: "Si te gusta, por qué, y qué muebles hay.",
+    question_en: "If you like it, why, and what furniture is there.",
+    speak: "Habla de tu dormitorio.",
+    criteria: [
+      { id:"gusta", label:"Opinión", required:true, patterns:["me gusta","me encanta"], hint:"¿Te gusta tu cuarto?" },
+      { id:"muebles", label:"Muebles", required:true, patterns:["cama","escritorio","armario","silla"], hint:"¿Qué hay dentro?" }
     ]
   },
   area: {
-    code: "5A",
-    title: "Barrio / Pueblo",
-    question_es: "Dónde está, qué hay y por qué te gusta.",
-    question_en: "Where it is, facilities and why you like it.",
+    code: "5A", title: "Barrio / Pueblo",
+    question_es: "Dónde vives, ubicación y qué instalaciones hay.",
+    question_en: "Where you live, location and facilities.",
     speak: "Habla de tu barrio.",
     criteria: [
-      { id:"instalaciones", label:"Instalaciones", required:true, patterns:["hay", ...TOWN_FACILITIES], hint:"¿Qué hay en tu pueblo?" }
+      { id:"donde", label:"Ubicación", required:true, patterns:[/vivo en/u, "centro","afueras"], hint:"¿Dónde está?" },
+      { id:"quehay", label:"Instalaciones", required:true, patterns:[...TOWN_FACILITIES, "hay"], hint:"¿Qué instalaciones hay?" }
     ]
   },
   school_general: {
-    code: "6A",
-    title: "Mi instituto",
-    question_es: "Descripción del centro e instalaciones.",
-    question_en: "Description of school and facilities.",
-    speak: "Habla del instituto.",
+    code: "6A", title: "Mi instituto",
+    question_es: "Descripción del centro, tipo e instalaciones.",
+    question_en: "School description, type and facilities.",
+    speak: "Habla de tu instituto.",
     criteria: [
-      { id:"tipo", label:"Tipo", required:true, patterns:["mixto","chicos","chicas","grande","pequeño"], hint:"¿Cómo es?" },
-      { id:"instalaciones", label:"Instalaciones", required:true, patterns:["hay", ...SCHOOL_FACILITIES], hint:"Gimnasio, patio, etc." }
+      { id:"desc", label:"Descripción", required:true, patterns:["grande","pequeño","moderno"], hint:"¿Cómo es el edificio?" },
+      { id:"tipo", label:"Tipo", required:true, patterns:["mixto","chicos","chicas"], hint:"¿Es mixto o simple?" },
+      { id:"inst", label:"Instalaciones", required:true, patterns:[...SCHOOL_FACILITIES, "hay"], hint:"¿Qué instalaciones hay?" }
+    ]
+  },
+  school_rules: {
+    code: "6B", title: "Normas escolares",
+    question_es: "Uso del móvil y normas sobre el chicle o comportamiento.",
+    question_en: "Mobile phone usage and rules about gum or behavior.",
+    speak: "Habla de las normas.",
+    criteria: [
+      { id:"movil", label:"Móvil", required:true, patterns:["movil","móvil","teléfono"], hint:"¿Se puede usar el móvil?" },
+      { id:"prohibido", label:"Prohibiciones", required:true, patterns:["prohibido","no se puede","chicle"], hint:"¿Qué está prohibido?" }
     ]
   },
   teachers: {
-    code: "6C",
-    title: "Profesores",
-    question_es: "Cómo son y quién es tu favorito/a.",
-    question_en: "What are they like and your favorite one.",
+    code: "6C", title: "Profesores",
+    question_es: "Cómo son en general y quién es tu favorito/a.",
+    question_en: "General description and favorite teacher.",
     speak: "Habla de tus profesores.",
     criteria: [
-      { id:"favorito", label:"Favorito", required:true, patterns:["mi profesor favorito","mi profesora favorita"], hint:"¿Quién te gusta más?" }
+      { id:"gen", label:"General", required:true, patterns:["estrictos","amables","simpáticos"], hint:"¿Cómo son los profes?" },
+      { id:"fav", label:"Favorito", required:true, patterns:[/profesor favorito/u, /profesora favorita/u], hint:"¿Quién es tu preferido?" }
+    ]
+  },
+  uniform: {
+    code: "6D", title: "El uniforme",
+    question_es: "Si es obligatorio y descripción de las prendas.",
+    question_en: "If it's compulsory and description of items.",
+    speak: "Habla del uniforme.",
+    criteria: [
+      { id:"oblig", label:"Obligatorio", required:true, patterns:["obligatorio","llevar"], hint:"¿Es obligatorio?" },
+      { id:"prendas", label:"Prendas", required:true, patterns:["jersey","pantalón","falda","zapatos","camisa"], hint:"¿Qué llevas puesto?" }
+    ]
+  },
+  free_time: {
+    code: "7A", title: "Tiempo libre",
+    question_es: "Menciona 2-3 aficiones que practiques.",
+    question_en: "Mention 2-3 hobbies you practice.",
+    speak: "Habla de tu tiempo libre.",
+    criteria: [
+      { id:"hobbies", label:"Aficiones", required:true, patterns:HOBBIES, hint:"Menciona al menos dos hobbies." }
+    ]
+  },
+  weekends: {
+    code: "7B", title: "Fines de semana",
+    question_es: "Qué sueles hacer los sábados y domingos.",
+    question_en: "What you usually do on Saturdays and Sundays.",
+    speak: "Habla de tus fines de semana.",
+    criteria: [
+      { id:"rutina", label:"Rutina", required:true, patterns:["normalmente","suelo","fines de semana"], hint:"¿Qué haces normalmente?" }
     ]
   },
   last_weekend: {
-    code: "8A",
-    title: "Finde pasado",
-    question_es: "Usa el PASADO (Fui, hice, salí).",
-    question_en: "Use PAST tense (I went, I did).",
+    code: "8A", title: "Fin de semana pasado",
+    question_es: "Qué hiciste (usa verbos en pasado: fui, hice, salí).",
+    question_en: "What you did (use past tense).",
     speak: "Habla del fin de semana pasado.",
     criteria: [
-      { id:"pasado", label:"Uso del Pasado", required:true, patterns:["fui","hice","estudie","salí","jugué","vi","comí"], hint:"¡Usa verbos en pasado!" }
+      { id:"pasado", label:"Uso del pasado", required:true, patterns:["fui","hice","estudie","salí","jugué","vi","comí"], hint:"¡Usa verbos en PASADO!" }
     ]
   },
   next_weekend: {
-    code: "9A",
-    title: "Finde que viene",
-    question_es: "Usa el FUTURO (Voy a...).",
-    question_en: "Use FUTURE (I am going to...).",
+    code: "9A", title: "Próximo fin de semana",
+    question_es: "Qué vas a hacer (usa futuro: voy a...).",
+    question_en: "What you are going to do (use future).",
     speak: "Habla del próximo fin de semana.",
     criteria: [
-      { id:"futuro", label:"Planes", required:true, patterns:["voy a","pienso","quiero"], hint:"Usa «Voy a + infinitivo»." }
+      { id:"futuro", label:"Planes futuros", required:true, patterns:["voy a","pienso","quiero"], hint:"Usa 'Voy a' + verbo." }
+    ]
+  },
+  future_plans: {
+    code: "10A", title: "Planes de futuro",
+    question_es: "Después de los exámenes y el año que viene.",
+    question_en: "After the exams and next year.",
+    speak: "Habla de tus proyectos.",
+    criteria: [
+      { id:"exam", label:"Tras exámenes", required:true, patterns:["después de los exámenes","cuando termine"], hint:"¿Qué harás al terminar?" },
+      { id:"univ", label:"Año próximo", required:true, patterns:["universidad","trabajar","año que viene"], hint:"¿Qué harás el año próximo?" }
     ]
   },
   spain_holidays: {
-    code: "11A",
-    title: "Vacaciones España",
-    question_es: "Has estado, dónde fuiste y opinión comida.",
-    question_en: "Have you been, where and food opinion.",
-    speak: "Habla de tus vacaciones.",
+    code: "11A", title: "Vacaciones en España",
+    question_es: "Si has estado, a dónde fuiste y opinión sobre la comida.",
+    question_en: "If you've been, where and food opinion.",
+    speak: "Habla de tus vacaciones en España.",
     criteria: [
-      { id:"ciudad", label:"Ciudad", required:true, patterns:["madrid","barcelona","fui a","estuve en"], hint:"¿A dónde fuiste?" },
-      { id:"comida", label:"Comida", required:true, patterns:["tapas","paella","comida","deliciosa"], hint:"Opinión sobre la comida." }
+      { id:"estado", label:"Estancia", required:true, patterns:["he estado","fui a","visitado"], hint:"¿Has estado en España?" },
+      { id:"comida", label:"Comida", required:true, patterns:["paella","tapas","comida","deliciosa"], hint:"¿Qué te parece la comida?" }
     ]
   }
 };
@@ -252,29 +291,8 @@ const TOPICS = {
 /* ============================================================
    MOTOR DE LA APLICACIÓN
    ============================================================ */
-
 let currentKey = null;
-let isListening = false;
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = null;
-
-if (SpeechRecognition) {
-  recognition = new SpeechRecognition();
-  recognition.lang = "es-ES";
-  recognition.continuous = false;
-  
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById("transcript").value = transcript;
-    stopListening();
-    analyzeNow();
-  };
-
-  recognition.onerror = () => {
-    stopListening();
-    setStatus("⚠️ Error de micro. Escribe tu respuesta.");
-  };
-}
+const recognition = (window.SpeechRecognition || window.webkitSpeechRecognition) ? new (window.SpeechRecognition || window.webkitSpeechRecognition)() : null;
 
 function renderTopics() {
   const grid = document.getElementById("topicsGrid");
@@ -283,10 +301,7 @@ function renderTopics() {
     const btn = document.createElement("button");
     btn.className = "topic-btn";
     btn.onclick = () => selectTopic(key, btn);
-    btn.innerHTML = `
-      <span class="topic-code">${t.code}</span>
-      <span style="font-weight:600">${t.title}</span>
-    `;
+    btn.innerHTML = `<span class="topic-code">${t.code}</span><span style="font-weight:600">${t.title}</span>`;
     grid.appendChild(btn);
   });
 }
@@ -295,30 +310,27 @@ function selectTopic(key, btn) {
   currentKey = key;
   document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  
   const t = TOPICS[key];
   document.getElementById("displayTitle").textContent = t.title;
   document.getElementById("displayPrompt").innerHTML = `
     <p style="margin:0 0 5px 0"><strong>ES:</strong> ${t.question_es}</p>
     <p style="margin:0; color:var(--text-muted)"><strong>EN:</strong> ${t.question_en}</p>
   `;
-  
   document.getElementById("btnStart").disabled = false;
   document.getElementById("btnAnalyze").disabled = false;
   document.getElementById("checklist").innerHTML = "";
   document.getElementById("summaryBox").style.display = "none";
-  setStatus("¡Listo para empezar!");
+  setStatus("¡Tema listo!");
 }
 
 async function startFlow() {
   const t = TOPICS[currentKey];
   setStatus("🔊 Escuchando pregunta...");
-  
   const ut = new SpeechSynthesisUtterance(t.speak);
   ut.lang = "es-ES";
   ut.onend = () => {
     if (recognition) {
-      isListening = true;
+      recognition.lang = "es-ES";
       recognition.start();
       document.getElementById("btnStop").disabled = false;
       document.getElementById("btnStop").classList.add("pulse-mic");
@@ -330,9 +342,17 @@ async function startFlow() {
 
 function stopListening() {
   if (recognition) recognition.stop();
-  isListening = false;
   document.getElementById("btnStop").disabled = true;
   document.getElementById("btnStop").classList.remove("pulse-mic");
+  setStatus("Texto capturado.");
+}
+
+if(recognition) {
+  recognition.onresult = (e) => {
+    document.getElementById("transcript").value = e.results[0][0].transcript;
+    stopListening();
+    analyzeNow();
+  };
 }
 
 function normalize(s) {
@@ -343,26 +363,20 @@ function analyzeNow() {
   const t = TOPICS[currentKey];
   const textRaw = document.getElementById("transcript").value;
   const text = normalize(textRaw);
-  
   const checklist = document.getElementById("checklist");
   checklist.innerHTML = "";
   let score = 0;
 
   t.criteria.forEach(c => {
     const ok = c.patterns.some(p => {
-      if (p instanceof RegExp) return p.test(textRaw.toLowerCase());
-      return text.includes(normalize(p));
+        if (p instanceof RegExp) return p.test(textRaw.toLowerCase());
+        return text.includes(normalize(p));
     });
-
     if (ok) score++;
-    
     const div = document.createElement("div");
     div.className = "checklist-item";
     div.innerHTML = `
-      <div>
-        <div style="font-weight:700">${c.label}</div>
-        <div style="font-size:0.8rem; color:var(--text-muted)">${ok ? '✅ ¡Conseguido!' : '❌ Pista: ' + c.hint}</div>
-      </div>
+      <div><div style="font-weight:700">${c.label}</div><div style="font-size:0.8rem; color:var(--text-muted)">${ok ? '✅ ¡Bien!' : '❌ Falta: ' + c.hint}</div></div>
       <span class="status-pill ${ok ? 'status-ok' : 'status-bad'}">${ok ? 'OK' : 'FALTA'}</span>
     `;
     checklist.appendChild(div);
@@ -370,28 +384,14 @@ function analyzeNow() {
 
   const summary = document.getElementById("summaryBox");
   summary.style.display = "block";
-  const finalScore = (score / t.criteria.length);
-  
-  if (finalScore === 1) {
-    summary.style.background = "#d1fae5"; summary.style.color = "#065f46";
-    summary.innerHTML = "🌟 EXCELENTE. Has cubierto todos los puntos clave.";
-  } else if (finalScore >= 0.5) {
-    summary.style.background = "#fef3c7"; summary.style.color = "#92400e";
-    summary.innerHTML = "👍 BUEN TRABAJO. Intenta añadir los detalles que faltan.";
-  } else {
-    summary.style.background = "#fee2e2"; summary.style.color = "#991b1b";
-    summary.innerHTML = "📚 SIGUE PRACTICANDO. Te falta información importante.";
-  }
+  const ratio = score / t.criteria.length;
+  summary.style.background = ratio === 1 ? "#d1fae5" : ratio >= 0.5 ? "#fef3c7" : "#fee2e2";
+  summary.style.color = ratio === 1 ? "#065f46" : ratio >= 0.5 ? "#92400e" : "#991b1b";
+  summary.innerHTML = ratio === 1 ? "¡Excelente! Has cubierto todos los puntos." : "Buen intento, añade lo que falta.";
 }
 
-function resetAll() {
-  location.reload();
-}
-
-function setStatus(msg) {
-  document.getElementById("status").textContent = msg;
-}
-
+function resetAll() { location.reload(); }
+function setStatus(msg) { document.getElementById("status").textContent = msg; }
 window.onload = renderTopics;
 </script>
 </body>
