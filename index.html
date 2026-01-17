@@ -134,8 +134,11 @@ async function analyze() {
     });
 
     const data = await response.json();
-    const raw = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
-    const result = JSON.parse(raw);
+if (data.error) {
+    alert("Error de Google: " + data.error.message);
+    return;
+}
+const raw = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
     
     renderResult(result);
 
