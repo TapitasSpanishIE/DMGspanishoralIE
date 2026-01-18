@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LC Spanish Coach - Manual Completo</title>
+  <title>LC Spanish Coach - Oral Exam Mode</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root { --primary: #2563eb; --secondary: #db2777; --bg: #f8fafc; --text: #1e293b; }
@@ -15,7 +15,6 @@
     .level-btn.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .level-btn.hl.active { color: var(--secondary); }
 
-    /* Grid ajustado para que quepan todos los temas bien */
     .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 25px; }
     .topic-btn { padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: white; cursor: pointer; font-size: 0.85rem; font-weight: 600; text-align: center; color: #475569; transition: 0.2s; }
     .topic-btn:hover { background: #f1f5f9; }
@@ -201,7 +200,7 @@ async function analyze() {
   btn.disabled = true;
   btn.innerText = "⏳ Analizando/Analyzing...";
 
-  // PROMPT BILINGÜE Y CALIBRADO
+  // PROMPT BLINDADO CONTRA PUNTUACIÓN
   const prompt = `
     Role: Spanish Leaving Cert Examiner (Ireland).
     Level: ${currentLevel} (${currentLevel === 'HL' ? 'High/B2' : 'Ordinary/A1-A2'}).
@@ -210,10 +209,16 @@ async function analyze() {
 
     INSTRUCTIONS:
     1. Feedback MUST be Bilingual: Provide "feedback_es" (Spanish) and "feedback_en" (English translation).
-    2. SCORING (CRITICAL):
-       - Ordinary Level (OL): Be VERY generous. Brief answers (e.g., "Es grande") are 100% correct if they answer the question. Ignore grammar errors unless comprehension is impossible.
-       - Higher Level (HL): Be stricter. Expect connectors, opinions, and complex verbs.
-    3. IGNORE: Do NOT penalize punctuation (commas, periods) or accents/tildes. It's an oral transcript.
+    2. SCORING - STRICTNESS:
+       - Ordinary Level (OL): Be VERY generous. Brief answers are 100% correct if they convey meaning.
+       - Higher Level (HL): Be strict with GRAMMAR (verbs, concordances) and VOCABULARY. BUT...
+    
+    3. ABSOLUTE PROHIBITION (FOR BOTH LEVELS):
+       - DO NOT CHECK PUNCTUATION (commas, dots, question marks).
+       - DO NOT CHECK ACCENTS/TILDES.
+       - It is an ORAL exam. If the student writes "camion" instead of "camión", it is CORRECT (same sound).
+       - If the student writes a run-on sentence without commas, it is CORRECT.
+
     4. Vocabulary: Accept "cuarto de baño" as standard for "bathroom/toilet".
 
     OUTPUT JSON ONLY:
